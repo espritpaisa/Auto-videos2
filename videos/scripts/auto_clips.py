@@ -3,20 +3,34 @@ import os
 INPUT = "videos"
 OUTPUT = "output"
 
-# Crear carpeta output si no existe
 os.makedirs(OUTPUT, exist_ok=True)
 
 print("🔥 Script iniciado")
 
-# Revisar si hay videos
-for file in os.listdir(INPUT):
-    if file.endswith(".mp4"):
-        print(f"Procesando: {file}")
-        
-        nombre = file.replace(".mp4", "")
-        
-        # Cortar primeros 10 segundos (más seguro)
-        comando = f"ffmpeg -i {INPUT}/{file} -t 10 {OUTPUT}/{nombre}_clip.mp4"
-        os.system(comando)
+# Verificar carpeta videos
+if not os.path.exists(INPUT):
+    print("❌ La carpeta 'videos' no existe")
+    exit(1)
 
-print("✅ Script terminado")
+files = os.listdir(INPUT)
+
+if len(files) == 0:
+    print("❌ No hay archivos en la carpeta videos")
+    exit(1)
+
+for file in files:
+    if file.endswith(".mp4"):
+        input_path = os.path.join(INPUT, file)
+        output_path = os.path.join(OUTPUT, file.replace(".mp4", "_clip.mp4"))
+
+        print(f"🎬 Procesando: {input_path}")
+
+        comando = f'ffmpeg -y -i "{input_path}" -t 10 "{output_path}"'
+        resultado = os.system(comando)
+
+        if resultado != 0:
+            print(f"❌ Error procesando {file}")
+        else:
+            print(f"✅ Clip creado: {output_path}")
+
+print("🚀 Script terminado")
