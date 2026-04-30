@@ -1,9 +1,6 @@
 name: Crear clips de video
 
-on:
-  push:
-    paths:
-      - 'videos/**'
+on: [push]
 
 jobs:
   procesar:
