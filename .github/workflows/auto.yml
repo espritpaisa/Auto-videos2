@@ -1,4 +1,4 @@
-name: crear clips automaticos
+name: sistema pro videos
 
 on:
   workflow_dispatch:
@@ -11,24 +11,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar repositorio
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Instalar FFmpeg
         run: |
           sudo apt-get update -y
           sudo apt-get install -y ffmpeg
 
-      - name: Configurar Python
+      - name: Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Ejecutar script
+      - name: Instalar IA
+        run: pip install openai-whisper moviepy
+
+      - name: Ejecutar sistema
         run: python scripts/auto_clips.py
 
       - name: Subir resultados
         uses: actions/upload-artifact@v4
         with:
-          name: clips
+          name: clips_pro
           path: output/
