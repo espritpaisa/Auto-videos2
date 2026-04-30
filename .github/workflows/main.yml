@@ -1,9 +1,17 @@
-name: prueba
+name: Procesar videos
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'videos/**'
 
 jobs:
-  test:
+  procesar:
     runs-on: ubuntu-latest
+
     steps:
-      - run: echo "🔥 YA FUNCIONA 🔥"
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Mostrar mensaje
+        run: echo "Video detectado correctamente"
