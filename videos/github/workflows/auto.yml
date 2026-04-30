@@ -1,17 +1,11 @@
-name: Automatizar videos
+name: Test automatización
 
-on:
-  push:
-    paths:
-      - 'videos/**'
+on: [push]
 
 jobs:
-  procesar:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Descargar repositorio
-        uses: actions/checkout@v3
-
-      - name: Ejecutar prueba
-        run: echo "Tu automatización está funcionando"
+      - name: Hola mundo
+        run: echo "🔥 FUNCIONA 🔥"
