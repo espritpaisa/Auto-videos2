@@ -1,0 +1,9 @@
+name: prueba
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🔥 YA FUNCIONA 🔥"
