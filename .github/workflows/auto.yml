@@ -1,4 +1,4 @@
-name: sistema pro videos
+name: clips con subtitulos
 
 on:
   workflow_dispatch:
@@ -18,19 +18,19 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y ffmpeg
 
-      - name: Python
+      - name: Configurar Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Instalar IA
-        run: pip install openai-whisper moviepy
+      - name: Instalar Whisper
+        run: pip install openai-whisper
 
-      - name: Ejecutar sistema
+      - name: Ejecutar script
         run: python scripts/auto_clips.py
 
       - name: Subir resultados
         uses: actions/upload-artifact@v4
         with:
-          name: clips_pro
+          name: clips_subtitulos
           path: output/
