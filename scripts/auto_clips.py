@@ -6,8 +6,9 @@ OUTPUT = "output"
 
 os.makedirs(OUTPUT, exist_ok=True)
 
-print("🔥 Sistema con subtítulos reales iniciado")
+print("🔥 Millionaire Mindset System iniciado")
 
+# cargar modelo de subtítulos
 model = whisper.load_model("base")
 
 def format_time(seconds):
@@ -21,23 +22,30 @@ for file in os.listdir(INPUT):
     if file.lower().endswith((".mp4", ".mov", ".mkv")):
         input_path = os.path.join(INPUT, file)
 
-        for i, start in enumerate([0, 15, 30]):
+        # clips estratégicos (puedes ajustar luego)
+        for i, start in enumerate([0, 20, 40]):
+            
             clip_path = os.path.join(OUTPUT, f"{file}_clip_{i}.mp4")
             srt_path = os.path.join(OUTPUT, f"{file}_clip_{i}.srt")
-            final_path = os.path.join(OUTPUT, f"{file}_final_{i}.mp4")
+            final_path = os.path.join(OUTPUT, f"{file}_FINAL_{i}.mp4")
 
             print(f"🎬 Creando clip {i}")
 
-            # 1. cortar clip vertical
+            # 1. VIDEO BASE (vertical + zoom + hook)
             os.system(
                 f'ffmpeg -y -ss {start} -i "{input_path}" -t 15 '
-                f'-vf "scale=1080:1920,setsar=1" "{clip_path}"'
+                f'-vf "scale=1080:1920,zoompan=z=\'min(zoom+0.0015,1.5)\':d=1,'
+                f'drawtext=text=\'Esto puede cambiar tu vida\':'
+                f'fontcolor=white:fontsize=60:box=1:boxcolor=black@0.6:'
+                f'x=(w-text_w)/2:y=100" '
+                f'"{clip_path}"'
             )
 
-            print("🧠 Transcribiendo audio...")
+            print("🧠 Generando subtítulos...")
+
+            # 2. TRANSCRIPCIÓN
             result = model.transcribe(clip_path)
 
-            # 2. crear subtítulos SRT
             with open(srt_path, "w", encoding="utf-8") as f:
                 for j, seg in enumerate(result["segments"]):
                     start_time = format_time(seg["start"])
@@ -48,13 +56,13 @@ for file in os.listdir(INPUT):
                     f.write(f"{start_time} --> {end_time}\n")
                     f.write(f"{text}\n\n")
 
-            print("🔥 Pegando subtítulos al video")
+            print("🔥 Pegando subtítulos")
 
-            # 3. quemar subtítulos
+            # 3. VIDEO FINAL CON SUBTÍTULOS PRO
             os.system(
                 f'ffmpeg -y -i "{clip_path}" '
-                f'-vf "subtitles={srt_path}:force_style=\'Fontsize=24,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=2\'" '
+                f'-vf "subtitles={srt_path}:force_style=\'Fontsize=36,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=3,Alignment=2\'" '
                 f'"{final_path}"'
             )
 
-print("🚀 Todo listo con subtítulos")
+print("🚀 Sistema terminado - clips listos para subir")
