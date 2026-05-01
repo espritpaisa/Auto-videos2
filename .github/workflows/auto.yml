@@ -1,4 +1,4 @@
-name: clips con subtitulos
+name: millionaire mindset clips
 
 on:
   workflow_dispatch:
@@ -23,14 +23,14 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Instalar Whisper
+      - name: Instalar dependencias
         run: pip install openai-whisper
 
-      - name: Ejecutar script
+      - name: Ejecutar sistema
         run: python scripts/auto_clips.py
 
       - name: Subir resultados
         uses: actions/upload-artifact@v4
         with:
-          name: clips_subtitulos
+          name: clips_finales
           path: output/
